@@ -1,7 +1,39 @@
-@(message: String)
+@(projects: List[Project], todoTasks: List[Task])
 
-@main("Hello","bobo") {
-    
-    <h1>@message</h1>
-    
+@main("Welcome to Play 2.0") {
+
+    <header>
+        <hgroup>
+            <h1>Dashboard</h1>
+            <h2>Tasks over all projects</h2>
+        </hgroup>
+    </header>
+
+    <article  class="tasks">
+        @todoTasks.groupBy(_.project).map {
+            case (project, tasks) => {
+                <div class="folder" data-folder-id="@project.id">
+                    <header>
+                        <h3>@project.name</h3>
+                    </header>
+                    <ul class="list">
+                        @tasks.map { task =>
+                            <li data-task-id="@task.id">
+                                <h4>@task.title</h4>
+                                @if(task.dueDate != null) {
+                                    <time datetime="@task.dueDate">
+                                        @task.dueDate.format("MMM dd yyyy")</time>
+                                }
+
+                                @if(task.assignedTo != null && task.assignedTo.email != null) {
+                                    <span class="assignedTo">@task.assignedTo.email</span>
+                                }
+                            </li>
+                        }
+                    </ul>
+                </div>
+            }
+        }
+    </article>
+
 }
