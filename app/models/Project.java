@@ -18,9 +18,9 @@ public class Project extends Model {
     public String name;
     public String folder;
     @ManyToMany(cascade = CascadeType.REMOVE)
-    public List<User> members = new ArrayList<User>();
+    public List<ZenUser> members = new ArrayList<ZenUser>();
 
-    public Project(String name, String folder, User owner) {
+    public Project(String name, String folder, ZenUser owner) {
         this.name = name;
         this.folder = folder;
         this.members.add(owner);
@@ -29,7 +29,7 @@ public class Project extends Model {
     public static Model.Finder<Long, Project> find = new Model.Finder(Long.class, Project.class);
 
     public static Project create(String name, String folder, String owner) {
-        Project project = new Project(name, folder, User.find.ref(owner));
+        Project project = new Project(name, folder, ZenUser.find.ref(owner));
         project.save();
         project.saveManyToManyAssociations("members");
         return project;

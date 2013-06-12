@@ -25,7 +25,7 @@ public class TaskTest extends WithApplication {
     @Test
     public void testData() {
         // Count things
-        assertEquals(3, User.find.findRowCount());
+        assertEquals(3, ZenUser.find.findRowCount());
         assertEquals(7, Project.find.findRowCount());
         assertEquals(5, Task.find.findRowCount());
     }

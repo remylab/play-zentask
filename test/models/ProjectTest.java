@@ -19,8 +19,8 @@ public class ProjectTest extends WithApplication {
 
     @Test
     public void findProjectsInvolving() {
-        new User("bob@gmail.com", "Bob", "secret").save();
-        new User("jane@gmail.com", "Jane", "secret").save();
+        new ZenUser("bob@gmail.com", "Bob", "secret").save();
+        new ZenUser("jane@gmail.com", "Jane", "secret").save();
 
         Project.create("Play 2", "play", "bob@gmail.com");
         Project.create("Play 1", "play", "jane@gmail.com");

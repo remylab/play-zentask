@@ -19,7 +19,7 @@ public class Task extends Model {
     public Date dueDate;
 
     @ManyToOne
-    public User assignedTo;
+    public ZenUser assignedTo;
     @ManyToOne
     public Project project;
 
