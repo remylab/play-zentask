@@ -1,0 +1,3 @@
+create database zentask;
+create user remy with password 'test';
+grant all privileges on database zentask to remy;

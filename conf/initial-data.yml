@@ -1,17 +1,17 @@
 # Users
 
 - &bob !!models.ZenUser
-    email:      bob@example.com
+    email:      bob_test@example.com
     name:       Bob
     password:   secret
 
 - &jane !!models.ZenUser
-    email:      jane@example.com
+    email:      jane_test@example.com
     name:       Jane
     password:   secret
 
 - &jeff !!models.ZenUser
-    email:      jeff@example.com
+    email:      jeff_test@example.com
     name:       Jeff
     password:   secret
     
