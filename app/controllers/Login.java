@@ -8,10 +8,10 @@ import play.mvc.Result;
 public class Login extends Controller {
 
     public static Result index() {
-        return ok(views.html.login.render(LoginForm));
+        return ok(views.html.login.render(loginForm));
     }
 
-    public final static Form<LoginModel> LoginForm = new Form(LoginModel.class);
+    public final static Form<LoginModel> loginForm = new Form(LoginModel.class);
 
     public static class LoginModel {
 
@@ -28,13 +28,13 @@ public class Login extends Controller {
     }
 
     public static Result authenticate() {
-        Form<LoginModel> loginForm = LoginForm.bindFromRequest();
+        Form<LoginModel> form = loginForm.bindFromRequest();
 
-        if (loginForm.hasErrors()) {
+        if (form.hasErrors()) {
             return badRequest(views.html.login.render(loginForm));
         } else {
             session().clear();
-            session("email", loginForm.get().email);
+            session("email", form.get().email);
             return redirect(routes.Application.index());
         }
     }
