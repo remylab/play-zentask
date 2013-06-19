@@ -40,30 +40,26 @@ create sequence task_seq;
 
 create sequence zen_user_seq;
 
-alter table task add constraint fk_task_assignedTo_1 foreign key (assigned_to_email) references zen_user (email) on delete restrict on update restrict;
+alter table task add constraint fk_task_assignedTo_1 foreign key (assigned_to_email) references zen_user (email);
 create index ix_task_assignedTo_1 on task (assigned_to_email);
-alter table task add constraint fk_task_project_2 foreign key (project_id) references project (id) on delete restrict on update restrict;
+alter table task add constraint fk_task_project_2 foreign key (project_id) references project (id);
 create index ix_task_project_2 on task (project_id);
 
 
 
-alter table project_zen_user add constraint fk_project_zen_user_project_01 foreign key (project_id) references project (id) on delete restrict on update restrict;
+alter table project_zen_user add constraint fk_project_zen_user_project_01 foreign key (project_id) references project (id);
 
-alter table project_zen_user add constraint fk_project_zen_user_zen_user_02 foreign key (zen_user_email) references zen_user (email) on delete restrict on update restrict;
+alter table project_zen_user add constraint fk_project_zen_user_zen_user_02 foreign key (zen_user_email) references zen_user (email);
 
 # --- !Downs
 
-SET REFERENTIAL_INTEGRITY FALSE;
+drop table if exists project cascade;
 
-drop table if exists project;
+drop table if exists project_zen_user cascade;
 
-drop table if exists project_zen_user;
+drop table if exists task cascade;
 
-drop table if exists task;
-
-drop table if exists zen_user;
-
-SET REFERENTIAL_INTEGRITY TRUE;
+drop table if exists zen_user cascade;
 
 drop sequence if exists project_seq;
 
