@@ -7,13 +7,19 @@ import java.util.List;
 import org.junit.Test;
 
 import play.libs.Yaml;
+import base.AbstractDBApplicationTest;
 
 import com.avaje.ebean.Ebean;
 
-public class TaskTest extends EbeanTest {
+public class TaskTest extends AbstractDBApplicationTest {
+
+	@Test
+	public void setUp() {
+		Ebean.save((List<?>) Yaml.load("test-data.yml"));
+	}
+
 	@Test
 	public void testData() {
-		Ebean.save((List) Yaml.load("test-data.yml"));
 
 		// Count things
 		assertEquals(3, ZenUser.find.findRowCount());
@@ -23,7 +29,6 @@ public class TaskTest extends EbeanTest {
 
 	@Test
 	public void findTodoTasksInvolving() {
-		Ebean.save((List) Yaml.load("test-data.yml"));
 
 		// Find all Bob's todo tasks
 		List<Task> bobsTasks = Task.findTodoInvolving("bob@example.com");

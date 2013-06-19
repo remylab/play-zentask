@@ -9,28 +9,28 @@ import static play.test.Helpers.inMemoryDatabase;
 import org.junit.Before;
 import org.junit.Test;
 
-import play.test.WithApplication;
+import base.AbstractDBApplicationTest;
 
-public class ZenUserTest extends WithApplication {
-    @Before
-    public void setUp() {
-        start(fakeApplication(inMemoryDatabase()));
-    }
+public class ZenUserTest extends AbstractDBApplicationTest {
+	@Before
+	public void setUp() {
+		start(fakeApplication(inMemoryDatabase()));
+	}
 
-    @Test
-    public void createAndRetrieveZenUser() {
-        new ZenUser("bob@gmail.com", "Bob", "secret").save();
-        ZenUser bob = ZenUser.find.where().eq("email", "bob@gmail.com").findUnique();
-        assertNotNull(bob);
-        assertEquals("Bob", bob.name);
-    }
+	@Test
+	public void createAndRetrieveZenUser() {
+		new ZenUser("bob@gmail.com", "Bob", "secret").save();
+		ZenUser bob = ZenUser.find.where().eq("email", "bob@gmail.com").findUnique();
+		assertNotNull(bob);
+		assertEquals("Bob", bob.name);
+	}
 
-    @Test
-    public void tryAuthenticateZenUser() {
-        new ZenUser("bob@gmail.com", "Bob", "secret").save();
+	@Test
+	public void tryAuthenticateZenUser() {
+		new ZenUser("bob@gmail.com", "Bob", "secret").save();
 
-        assertNotNull(ZenUser.authenticate("bob@gmail.com", "secret"));
-        assertNull(ZenUser.authenticate("bob@gmail.com", "badpassword"));
-        assertNull(ZenUser.authenticate("tom@gmail.com", "secret"));
-    }
+		assertNotNull(ZenUser.authenticate("bob@gmail.com", "secret"));
+		assertNull(ZenUser.authenticate("bob@gmail.com", "badpassword"));
+		assertNull(ZenUser.authenticate("tom@gmail.com", "secret"));
+	}
 }
