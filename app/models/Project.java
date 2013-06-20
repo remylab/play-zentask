@@ -9,9 +9,13 @@ import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 
 import play.db.ebean.Model;
+import play.mvc.Security;
+import controllers.Secured;
 
+@Security.Authenticated(Secured.class)
 @Entity
 public class Project extends Model {
+    private static final long serialVersionUID = 1L;
 
     @Id
     public Long id;
@@ -38,4 +42,16 @@ public class Project extends Model {
     public static List<Project> findInvolving(String useremail) {
         return find.where().eq("members.email", useremail).findList();
     }
+
+    public static boolean isMember(Long project, String user) {
+        return find.where().eq("members.email", user).eq("id", project).findRowCount() > 0;
+    }
+
+    public static String rename(Long projectId, String newName) {
+        Project project = find.ref(projectId);
+        project.name = newName;
+        project.update();
+        return newName;
+    }
+
 }
