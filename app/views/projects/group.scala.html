@@ -1,14 +1,13 @@
 @(folder: String, projects: List[Project])
 
-<li data-group="@group">
+<li data-group="@folder">
     <span class="toggle"></span>
     <h4 class="groupName">@folder</h4>
     <span class="loader">Loading</span>
-    <dl class="options">
+    <dl class="optionsx">
         <dt>Options</dt>
         <dd>
             <button class="newProject">New project</button>
-            <button class="deleteGroup">Remove group</button>
         </dd>
     </dl>
     <ul>

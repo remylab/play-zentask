@@ -12,21 +12,22 @@ import org.junit.Test;
 import base.AbstractDBApplicationTest;
 
 public class ProjectTest extends AbstractDBApplicationTest {
-	@Before
-	public void setUp() {
-		start(fakeApplication(inMemoryDatabase()));
-	}
 
-	@Test
-	public void findProjectsInvolving() {
-		new ZenUser("bob@gmail.com", "Bob", "secret").save();
-		new ZenUser("jane@gmail.com", "Jane", "secret").save();
+    @Before
+    public void setUp() {
+        start(fakeApplication(inMemoryDatabase()));
+    }
 
-		Project.create("Play 2", "play", "bob@gmail.com");
-		Project.create("Play 1", "play", "jane@gmail.com");
+    @Test
+    public void findProjectsInvolving() {
+        new ZenUser("bob@gmail.com", "Bob", "secret").save();
+        new ZenUser("jane@gmail.com", "Jane", "secret").save();
 
-		List<Project> results = Project.findInvolving("bob@gmail.com");
-		assertEquals(1, results.size());
-		assertEquals("Play 2", results.get(0).name);
-	}
+        Project.create("Play 2", "play", "bob@gmail.com");
+        Project.create("Play 1", "play", "jane@gmail.com");
+
+        List<Project> results = Project.findInvolving("bob@gmail.com");
+        assertEquals(1, results.size());
+        assertEquals("Play 2", results.get(0).name);
+    }
 }

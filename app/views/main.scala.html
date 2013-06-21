@@ -5,7 +5,56 @@
         <title>Zentasks</title>
         <link rel="stylesheet" type="text/css" media="screen" href="@routes.Assets.at("stylesheets/main.css")">
         <script type="text/javascript" src="/public/javascripts/jquery-1.9.0.min.js"></script>
-    </head>
+        <script type="text/javascript" src="@routes.Application.javascriptRoutes()"></script>
+        
+        <script type="text/javascript">
+            $(function(){
+
+                $(".newProject").bind('click',function() {
+                	var folderName =  $(this).parents("li").attr("data-group") ;
+                	addProjectIntoFolder($(this).parents("li"),folderName);
+                });
+                
+                $(".delete").each(function(index) {
+                	bindDelete($(this));
+                });
+            	
+            })
+            
+            function bindDelete(e){
+                e.bind('click',function() {
+                	var projectId = $(this).closest("li").attr("data-project") ;
+                	deleteProject($(this).closest("li"),projectId);
+                });	
+            }
+            
+            function deleteProject(item,id) {
+
+    	        jsRoutes.controllers.ProjectController.delete(id).ajax({
+    	        	context: this,
+    	        	success:function() {
+    	        		item.remove();
+    	        	}
+    	        });
+            }
+            
+            function addProjectIntoFolder(parent,name) {
+
+    	        jsRoutes.controllers.ProjectController.add().ajax({
+    	        	context: this,
+    	        	data:{
+    	        		folder:name
+    	        	},
+    	        	success:function(data, textStatus, jqXHR) {
+    	        		parent.append(data);
+    	        		bindDelete($(".delete:last",parent));
+    	        	}
+    	        });
+            }
+ 
+		</script>
+	               
+	</head>
     <body>
         <header>
             <a href="@routes.Application.index" id="logo"><span>Zen</span>tasks</a>
