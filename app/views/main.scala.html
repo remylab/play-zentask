@@ -11,8 +11,9 @@
             $(function(){
 
                 $(".newProject").bind('click',function() {
-                	var folderName =  $(this).parents("li").attr("data-group") ;
-                	addProjectIntoFolder($(this).parents("li"),folderName);
+                	var folder = $(this).closest("li");
+                	var folderName =  folder.attr("data-group") ;
+                	addProjectIntoFolder(folder.children("ul:first"),folderName);
                 });
                 
                 $(".delete").each(function(index) {
@@ -46,8 +47,8 @@
     	        		folder:name
     	        	},
     	        	success:function(data, textStatus, jqXHR) {
-    	        		parent.append(data);
-    	        		bindDelete($(".delete:last",parent));
+    	        		parent.prepend(data);
+    	        		bindDelete($(".delete:first",parent));
     	        	}
     	        });
             }

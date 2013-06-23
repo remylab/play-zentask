@@ -40,7 +40,7 @@ public class Project extends Model {
     }
 
     public static List<Project> findInvolving(String useremail) {
-        return find.where().eq("members.email", useremail).findList();
+        return find.where().eq("members.email", useremail).orderBy("id desc").findList();
     }
 
     public static boolean isMember(Long project, String user) {
