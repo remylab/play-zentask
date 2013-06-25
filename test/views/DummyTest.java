@@ -2,42 +2,57 @@ package views;
 
 import static play.test.Helpers.fakeGlobal;
 
+import java.io.IOException;
+import java.util.List;
+
 import org.junit.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.htmlunit.HtmlUnitDriver;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
+import play.libs.Yaml;
 import play.test.FakeApplication;
 import play.test.Helpers;
+import play.test.WithServer;
+import util.EbeanTestUtil;
 
-public class DummyTest {
+import com.avaje.ebean.Ebean;
+
+public class DummyTest extends WithServer {
 
     public static FakeApplication app;
 
     @Test
     public void test() throws Exception {
-        
+
         // Create a new instance of the html unit driver
         WebDriver driver = new HtmlUnitDriver();
 
         app = Helpers.fakeApplication(fakeGlobal());
-        Helpers.start(app);
+        start(app, 9003);
+
+        try {
+            EbeanTestUtil.dropDB();
+            EbeanTestUtil.createDB();
+            Ebean.save((List<?>) Yaml.load("test-data.yml"));
+        } catch (IOException e) {
+            // ignore
+        }
 
         // And now use this to visit Google
-        driver.get("http://www.google.com");
+        driver.get("http://localhost:9003");
 
-        // Find the text input element by its name
-        WebElement element = driver.findElement(By.name("q"));
-
-        // Enter something to search for
-        element.sendKeys("Cheese!");
-
-        // Now submit the form. WebDriver will find the form for us from the
-        // element
+        WebElement element = driver.findElement(By.name("email"));
+        element.sendKeys("bob@example.com");
+        element = driver.findElement(By.name("password"));
+        element.sendKeys("secret");
         element.submit();
 
-        // Check the title of the page
-        System.out.println("Page title is: " + driver.getTitle());
+        WebDriverWait wait = new WebDriverWait(driver, 3);
+        wait.until(ExpectedConditions.presenceOfElementLocated((By.className("dashboard"))));
+
     }
 }
