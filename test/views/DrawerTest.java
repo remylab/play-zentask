@@ -1,6 +1,7 @@
 package views;
 
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import pages.Dashboard;
@@ -8,6 +9,7 @@ import pages.Drawer;
 import pages.Login;
 import play.test.WithBrowser;
 
+@Ignore
 public class DrawerTest extends WithBrowser {
 
     public Dashboard dashboard;

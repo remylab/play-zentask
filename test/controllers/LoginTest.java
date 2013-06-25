@@ -10,6 +10,7 @@ import static play.test.Helpers.status;
 
 import java.util.List;
 
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 import play.libs.Yaml;
@@ -21,37 +22,28 @@ import com.google.common.collect.ImmutableMap;
 
 public class LoginTest extends AbstractDBApplicationTest {
 
-    @Test
-    public void setUp() {
+    @BeforeClass
+    public static void setUp() {
         Ebean.save((List<?>) Yaml.load("test-data.yml"));
     }
 
     @Test
     public void authenticateSuccess() {
-        Result result = callAction(
-                controllers.routes.ref.Login.authenticate(),
-                fakeRequest().withFormUrlEncodedBody(ImmutableMap.of("email", "bob@example.com", "password", "secret"))
-                );
+        Result result = callAction(controllers.routes.ref.Login.authenticate(), fakeRequest().withFormUrlEncodedBody(ImmutableMap.of("email", "bob@example.com", "password", "secret")));
         assertEquals(303, status(result));
         assertEquals("bob@example.com", session(result).get("email"));
     }
 
     @Test
     public void authenticateFailure() {
-        Result result = callAction(
-                controllers.routes.ref.Login.authenticate(),
-                fakeRequest().withFormUrlEncodedBody(ImmutableMap.of("email", "bob@example.com", "password", "badpassword"))
-                );
+        Result result = callAction(controllers.routes.ref.Login.authenticate(), fakeRequest().withFormUrlEncodedBody(ImmutableMap.of("email", "bob@example.com", "password", "badpassword")));
         assertEquals(400, status(result));
         assertNull(session(result).get("email"));
     }
 
     @Test
     public void authenticated() {
-        Result result = callAction(
-                controllers.routes.ref.Application.index(),
-                fakeRequest().withSession("email", "bob@example.com")
-                );
+        Result result = callAction(controllers.routes.ref.Application.index(), fakeRequest().withSession("email", "bob@example.com"));
         assertEquals(200, status(result));
     }
 
